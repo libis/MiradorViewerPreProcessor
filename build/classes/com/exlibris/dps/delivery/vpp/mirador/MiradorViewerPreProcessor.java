@@ -173,7 +173,7 @@ public class MiradorViewerPreProcessor extends AbstractViewerPreProcessor
             continue;
         }
             
-        if ((filecntr < 10) || (origPidFound == false))    {
+        if ((filecntr < 2) || (origPidFound == false))    {
           IEParser ieParser = getAccess().getIE(this.pid,null,null);
           if ((this.repPid = db.getDerivativeHighPid(this.pid))== null) {
              this.repPid = db.getPreservation(this.pid);
@@ -182,6 +182,7 @@ public class MiradorViewerPreProcessor extends AbstractViewerPreProcessor
           DnxDocument dnxie = ieParser.getIeDnx();
           DnxSection dnxieS = dnxie.getSectionById(DNXConstants.ACCESSRIGHTSPOLICY.sectionId);
           List<DnxSectionRecord> dnxieSR = dnxieS.getRecordList();
+          this.licentie = "";
           for (DnxSectionRecord record : dnxieSR) {
               DnxRecordKey key = record.getKeyById(DNXConstants.ACCESSRIGHTSPOLICY.POLICYID.sectionKeyId);
               if (this.licentie.length() != 0) this.licentie += " - ";
@@ -190,7 +191,7 @@ public class MiradorViewerPreProcessor extends AbstractViewerPreProcessor
           
           if ((this.licentie != null) && (this.licentie.contains("2006361"))) {
               logger.info(this.pid+" is suspended", new String[] { this.origPid });
-              break;
+              continue;
           } else {         
 
           
@@ -263,8 +264,8 @@ public class MiradorViewerPreProcessor extends AbstractViewerPreProcessor
     manifest.put( "@type", "sc:Manifest");
     manifest.put( "label", dc.getTitle());
     manifest.put( "description", dc.getValue("dc", "description"));
-    manifest.put( "license", this.licentie);
-    manifest.put( "attribution", this.entiteit);
+//    manifest.put( "license", this.licentie);
+//    manifest.put( "attribution", this.entiteit);
     
 
     String dcValue = null;
@@ -374,6 +375,223 @@ public class MiradorViewerPreProcessor extends AbstractViewerPreProcessor
         metadata.put("value", dcValue );
         metadataArr.put(metadata);
     }
+    
+    if ((dcValue = dc.getDctermsValue("abstract")) != null) {
+            metadata = new JSONObject();
+            metadata.put("label", "abstract");
+            metadata.put("value", dcValue );
+            metadataArr.put(metadata);
+        }
+    if ((dcValue = dc.getDctermsValue("accessRights")) != null) {
+            metadata = new JSONObject();
+            metadata.put("label", "accessRights");
+            metadata.put("value", dcValue );
+            metadataArr.put(metadata);
+        }
+    if ((dcValue = dc.getDctermsValue("accrualPeriodicity")) != null) {
+            metadata = new JSONObject();
+            metadata.put("label", "accrualPeriodicity");
+            metadata.put("value", dcValue );
+            metadataArr.put(metadata);
+        }
+    if ((dcValue = dc.getDctermsValue("alternative")) != null) {
+            metadata = new JSONObject();
+            metadata.put("label", "alternative");
+            metadata.put("value", dcValue );
+            metadataArr.put(metadata);
+        }
+    if ((dcValue = dc.getDctermsValue("available")) != null) {
+            metadata = new JSONObject();
+            metadata.put("label", "available");
+            metadata.put("value", dcValue );
+            metadataArr.put(metadata);
+        }
+    if ((dcValue = dc.getDctermsValue("bibliographicCitation")) != null) {
+            metadata = new JSONObject();
+            metadata.put("label", "bibliographicCitation");
+            metadata.put("value", dcValue );
+            metadataArr.put(metadata);
+        }
+    if ((dcValue = dc.getDctermsValue("conformsTo")) != null) {
+            metadata = new JSONObject();
+            metadata.put("label", "conformsTo");
+            metadata.put("value", dcValue );
+            metadataArr.put(metadata);
+        }
+    if ((dcValue = dc.getDctermsValue("created")) != null) {
+            metadata = new JSONObject();
+            metadata.put("label", "created");
+            metadata.put("value", dcValue );
+            metadataArr.put(metadata);
+        }
+
+    if ((dcValue = dc.getDctermsValue("dateAccepted")) != null) {
+            metadata = new JSONObject();
+            metadata.put("label", "dateAccepted");
+            metadata.put("value", dcValue );
+            metadataArr.put(metadata);
+        }
+
+    if ((dcValue = dc.getDctermsValue("dateCopyrighted")) != null) {
+            metadata = new JSONObject();
+            metadata.put("label", "dateCopyrighted");
+            metadata.put("value", dcValue );
+            metadataArr.put(metadata);
+        }
+
+    if ((dcValue = dc.getDctermsValue("dateSubmitted")) != null) {
+            metadata = new JSONObject();
+            metadata.put("label", "dateSubmitted");
+            metadata.put("value", dcValue );
+            metadataArr.put(metadata);
+        }
+
+    if ((dcValue = dc.getDctermsValue("educationLevel")) != null) {
+            metadata = new JSONObject();
+            metadata.put("label", "educationLevel");
+            metadata.put("value", dcValue );
+            metadataArr.put(metadata);
+        }
+
+    if ((dcValue = dc.getDctermsValue("hasFormat")) != null) {
+            metadata = new JSONObject();
+            metadata.put("label", "hasFormat");
+            metadata.put("value", dcValue );
+            metadataArr.put(metadata);
+        }
+
+    if ((dcValue = dc.getDctermsValue("hasPart")) != null) {
+            metadata = new JSONObject();
+            metadata.put("label", "hasPart");
+            metadata.put("value", dcValue );
+            metadataArr.put(metadata);
+        }
+
+    if ((dcValue = dc.getDctermsValue("hasVersion")) != null) {
+            metadata = new JSONObject();
+            metadata.put("label", "hasVersion");
+            metadata.put("value", dcValue );
+            metadataArr.put(metadata);
+        }
+
+    if ((dcValue = dc.getDctermsValue("isFormatOf")) != null) {
+            metadata = new JSONObject();
+            metadata.put("label", "isFormatOf");
+            metadata.put("value", dcValue );
+            metadataArr.put(metadata);
+        }
+
+    if ((dcValue = dc.getDctermsValue("isPartOf")) != null) {
+            metadata = new JSONObject();
+            metadata.put("label", "isPartOf");
+            metadata.put("value", dcValue );
+            metadataArr.put(metadata);
+        }
+
+    if ((dcValue = dc.getDctermsValue("isReferencedBy")) != null) {
+            metadata = new JSONObject();
+            metadata.put("label", "isReferencedBy");
+            metadata.put("value", dcValue );
+            metadataArr.put(metadata);
+        }
+
+    if ((dcValue = dc.getDctermsValue("isReplacedBy")) != null) {
+            metadata = new JSONObject();
+            metadata.put("label", "isReplacedBy");
+            metadata.put("value", dcValue );
+            metadataArr.put(metadata);
+        }
+
+    if ((dcValue = dc.getDctermsValue("isRequiredBy")) != null) {
+            metadata = new JSONObject();
+            metadata.put("label", "isRequiredBy");
+            metadata.put("value", dcValue );
+            metadataArr.put(metadata);
+        }
+
+    if ((dcValue = dc.getDctermsValue("isVersionOf")) != null) {
+            metadata = new JSONObject();
+            metadata.put("label", "isVersionOf");
+            metadata.put("value", dcValue );
+            metadataArr.put(metadata);
+        }
+
+    if ((dcValue = dc.getDctermsValue("issued")) != null) {
+            metadata = new JSONObject();
+            metadata.put("label", "issued");
+            metadata.put("value", dcValue );
+            metadataArr.put(metadata);
+        }
+
+    if ((dcValue = dc.getDctermsValue("license")) != null) {
+            metadata = new JSONObject();
+            metadata.put("label", "license");
+            metadata.put("value", dcValue );
+            metadataArr.put(metadata);
+        }
+
+    if ((dcValue = dc.getDctermsValue("mediator")) != null) {
+            metadata = new JSONObject();
+            metadata.put("label", "mediator");
+            metadata.put("value", dcValue );
+            metadataArr.put(metadata);
+        }
+
+    if ((dcValue = dc.getDctermsValue("modified")) != null) {
+            metadata = new JSONObject();
+            metadata.put("label", "modified");
+            metadata.put("value", dcValue );
+            metadataArr.put(metadata);
+        }
+
+    if ((dcValue = dc.getDctermsValue("references")) != null) {
+            metadata = new JSONObject();
+            metadata.put("label", "references");
+            metadata.put("value", dcValue );
+            metadataArr.put(metadata);
+        }
+
+    if ((dcValue = dc.getDctermsValue("replaces")) != null) {
+            metadata = new JSONObject();
+            metadata.put("label", "replaces");
+            metadata.put("value", dcValue );
+            metadataArr.put(metadata);
+        }
+
+    if ((dcValue = dc.getDctermsValue("requires")) != null) {
+            metadata = new JSONObject();
+            metadata.put("label", "requires");
+            metadata.put("value", dcValue );
+            metadataArr.put(metadata);
+        }
+
+    if ((dcValue = dc.getDctermsValue("spatial")) != null) {
+            metadata = new JSONObject();
+            metadata.put("label", "spatial");
+            metadata.put("value", dcValue );
+            metadataArr.put(metadata);
+        }
+    if ((dcValue = dc.getDctermsValue("tableOfContents")) != null) {
+            metadata = new JSONObject();
+            metadata.put("label", "tableOfContents");
+            metadata.put("value", dcValue );
+            metadataArr.put(metadata);
+        }
+
+    if ((dcValue = dc.getDctermsValue("temporal")) != null) {
+            metadata = new JSONObject();
+            metadata.put("label", "temporal");
+            metadata.put("value", dcValue );
+            metadataArr.put(metadata);
+        }
+
+    if ((dcValue = dc.getDctermsValue("valid")) != null) {
+            metadata = new JSONObject();
+            metadata.put("label", "valid");
+            metadata.put("value", dcValue );
+            metadataArr.put(metadata);
+        }
+    
     manifest.put("metadata",metadataArr);
     
     JSONObject sequence = new JSONObject();

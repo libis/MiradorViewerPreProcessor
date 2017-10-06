@@ -84,8 +84,8 @@ public class Db {
 
 		  try {
 //		    conn = DriverManager.getConnection(url,"V232_REP00","V232_REP00");
-//		    conn_shr = DriverManager.getConnection(url,"V232_SHR00","V2KU_SHR00");
-//		    conn_per = DriverManager.getConnection(url,"V232_PER00","V2KU_PER00");
+//		    conn_shr = DriverManager.getConnection(url,"V232_SHR00","V232_SHR00");
+//		    conn_per = DriverManager.getConnection(url,"V232_PER00","V232_PER00");
 		    conn = DriverManager.getConnection(url,"V2KU_rep00","V2KU_rep00");
 		    conn_shr = DriverManager.getConnection(url,"V2KU_SHR00","V2KU_SHR00");
 		    conn_per = DriverManager.getConnection(url,"V2KU_PER00","V2KU_PER00");
@@ -254,6 +254,8 @@ public class Db {
      
      public String getFileLabel(String filePid) {
 	  
+        Statement stmt3 = null;
+        ResultSet rset3 = null;
         Statement stmt = null;
         ResultSet rset = null;
         Statement stmt2 = null;
@@ -261,6 +263,7 @@ public class Db {
         String label = null;
         String query = null;
         String query2 = null;
+        String query3 = null;
         Integer tmpStorageId = null;
         String tmpInternalPath = null;
 
@@ -268,25 +271,39 @@ public class Db {
         this.storageid = -1;
         try{
             getConnection();
-            stmt = conn.createStatement();
+            
+           stmt = conn.createStatement();
            //query =  "select c.label,r.storageid,r.internalpath from hdecontrol c left outer join hdestreamref r on r.pid = c.pid where c.pid = '"+filePid+"'";            
 
-            query = "select substr(substr(m.value,instr(m.value,'label\">')+7),1,instr(substr(m.value,instr(m.value,'label\">')+7),'</key>')-1) as label,r.storageid,r.internalpath from hdecontrol c "+
-"left outer join hdestreamref r on r.pid = c.pid "+
-"left outer join hdepidmid pm on pm.pid = c.pid "+
-"left outer join hdemetadata m on m.mid = pm.mid and m.mdid = 21 "+
-"where c.pid = '"+filePid+"'";             
+            query = "select substr(substr(m.value,instr(m.value,'label\">')+7),1,instr(substr(m.value,instr(m.value,'label\">')+7),'</key>')-1) as label from hdepidmid pm "+
+"inner join hdemetadata m on m.mid = pm.mid and m.mdid = 21 "+
+"where pm.pid = '"+filePid+"'";             
             
             
 	    rset = stmt.executeQuery(query);
 	    while (rset.next()) {
 	    	label = rset.getString(1);
-                tmpStorageId = rset.getInt(2);
-                tmpInternalPath = rset.getString(3);
                 break;
 	    }
 	    rset.close();
 	    stmt.close();
+               
+            
+            stmt3 = conn.createStatement();
+           //query =  "select c.label,r.storageid,r.internalpath from hdecontrol c left outer join hdestreamref r on r.pid = c.pid where c.pid = '"+filePid+"'";            
+
+            query3 = "select r.storageid,r.internalpath from hdestreamref r "+
+"where r.pid = '"+filePid+"'";             
+            
+            
+	    rset3 = stmt3.executeQuery(query3);
+	    while (rset3.next()) {
+                tmpStorageId = rset3.getInt(1);
+                tmpInternalPath = rset3.getString(2);
+                break;
+	    }
+	    rset3.close();
+	    stmt3.close();
             
             try {
                 stmt2 = conn_per.createStatement();
